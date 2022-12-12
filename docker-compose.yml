@@ -1,0 +1,30 @@
+services:
+  api:
+    image: back-end
+    build:
+      context: ./time_manager_back/
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./time_manager_back:/time_manager_back
+  postgres-db:
+    image: postgres
+    volumes:
+      - "./volumes/postgres-db:/var/lib/postgresql/data"
+    ports:
+      - "5001:5432"
+    environment:
+      POSTGRES_PASSWORD: postgrescontainer
+      POSTGRES_USER: postgres
+      PGDATA: /var/lib/postgresql/data/test
+  front-end:
+    image: front-end
+    build:
+      context: ./time_manager_front/
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./time_manager_front:/time_manager_front
+networks:
+  default:
+    name: time-manager

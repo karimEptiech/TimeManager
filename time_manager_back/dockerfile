@@ -1,0 +1,12 @@
+# syntax=docker/dockerfile:1
+FROM elixir:1.13.4-otp-25-alpine
+RUN mix local.hex --force
+RUN mix local.rebar --force
+RUN apk add build-base
+WORKDIR time_manager_back
+ENV PG_HOST="postgres-db"
+ENV PG_PORT="5432"
+COPY . .
+RUN mix deps.get
+CMD ["mix", "phx.server"]
+EXPOSE 4000
